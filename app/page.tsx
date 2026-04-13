@@ -1,65 +1,74 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function Home() {
+  const [email, setEmail] = useState('')
+  const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    setLoading(false)
+    if (error) {
+      setError(error.message)
+    } else {
+      setSent(true)
+    }
+  }
+
+  if (sent) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center space-y-3 px-6">
+          <div className="text-5xl mb-6">📬</div>
+          <h1 className="text-2xl font-semibold">Check your email</h1>
+          <p className="text-zinc-500 text-base">We sent a magic link to<br /><span className="text-zinc-800 font-medium">{email}</span></p>
+          <p className="text-zinc-400 text-sm pt-2">Click the link in the email to sign in.</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="w-full max-w-sm space-y-8 px-6">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">Ring</h1>
+          <p className="text-zinc-500 text-base leading-relaxed">
+            AI calls you when it's time to do things.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input
+            type="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base outline-none focus:border-zinc-900 transition-colors"
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-black text-white py-3 text-base font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            {loading ? 'Sending…' : 'Send magic link'}
+          </button>
+        </form>
+        <p className="text-zinc-400 text-sm text-center">No password needed.</p>
+      </div>
     </div>
-  );
+  )
 }
