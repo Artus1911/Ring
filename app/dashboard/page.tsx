@@ -15,7 +15,7 @@ type CallLog = {
   id: string
   called_at: string
   outcome: string | null
-  tasks: { text: string } | null
+  tasks: { text: string }[] | null
 }
 
 function formatDue(due_at: string) {
@@ -175,7 +175,7 @@ export default function Dashboard() {
             <ul className="space-y-3">
               {callLogs.map(log => (
                 <li key={log.id} className="flex items-start justify-between gap-4 rounded-xl border border-zinc-100 px-4 py-3">
-                  <span className="text-base text-zinc-900">{log.tasks?.text ?? '—'}</span>
+                  <span className="text-base text-zinc-900">{log.tasks?.[0]?.text ?? '—'}</span>
                   <span className="text-sm text-zinc-400 whitespace-nowrap shrink-0 capitalize">{log.outcome ?? 'unknown'}</span>
                 </li>
               ))}
