@@ -61,7 +61,7 @@ export default function Home() {
               value={otp}
               onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 8))}
               required
-              className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-2xl outline-none focus:border-zinc-900 transition-colors text-center tracking-widest"
+              className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-2xl outline-none focus:border-zinc-900 transition-colors text-center tracking-widest text-zinc-900"
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button
@@ -100,7 +100,7 @@ export default function Home() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base outline-none focus:border-zinc-900 transition-colors"
+            className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base outline-none focus:border-zinc-900 transition-colors text-zinc-900"
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button

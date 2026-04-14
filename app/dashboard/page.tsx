@@ -135,7 +135,7 @@ export default function Dashboard() {
             onChange={e => setTaskInput(e.target.value)}
             placeholder="e.g. call dentist tomorrow at 2pm"
             rows={2}
-            className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base outline-none focus:border-zinc-900 transition-colors resize-none"
+            className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-base outline-none focus:border-zinc-900 transition-colors resize-none text-zinc-900"
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
