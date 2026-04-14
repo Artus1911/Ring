@@ -59,14 +59,14 @@ export default function Home() {
               inputMode="numeric"
               placeholder="000000"
               value={otp}
-              onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 8))}
               required
               className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-2xl outline-none focus:border-zinc-900 transition-colors text-center tracking-widest"
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button
               type="submit"
-              disabled={loading || otp.length !== 6}
+              disabled={loading || otp.length < 6}
               className="w-full rounded-xl bg-black text-white py-3 text-base font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50"
             >
               {loading ? 'Verifying…' : 'Sign in'}
